@@ -47,6 +47,10 @@ export default {
   data: function () {
     return {
       swiperOptions: {
+        // 拖动的临界值（单位为px），如果触摸距离小于该值滑块不会被拖动。
+        threshold: 50,
+        // 设置边缘反抗力，值越小，反抗力越大
+        resistanceRatio: 0,
         // 分页器
         pagination: {
           el: '.swiper-pagination',

@@ -201,7 +201,9 @@ export default {
       .list-keys{
         position: fixed;
         top: 55%;
-        right: 30px;
+        right: 0;
+        padding: 0 15px 0 20px;
+        box-sizing: border-box;
         transform: translateY(-50%);
         li{
           width: 35px;

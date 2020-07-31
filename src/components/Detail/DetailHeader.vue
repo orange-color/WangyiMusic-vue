@@ -8,13 +8,18 @@
 
 <script>
 import Header from '../Header'
+import { mapActions } from 'vuex'
 export default {
   name: 'SubHeader',
   components: {
     Header
   },
   methods: {
+    ...mapActions([
+      'setSongInit'
+    ]),
     back () {
+      this.setSongInit(false)
       window.history.back()
     }
   },
