@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>网易云音乐</title>
+    <!-- 可以让部分国产浏览器默认采用高速模式渲染页面 -->
+    <meta name="renderer" content="webkit">
+    <!-- 为了让 IE 浏览器运行最新的渲染模式下 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="网易云音乐，音乐，播放器，网易，下载，播放，DJ，免费，明星，精选，歌单，识别音乐，收藏，分享音乐，音乐互动，高音质，320K，音乐社交，官网，music.163.com" />
+    <meta name="description" content="网易云音乐是一款专注于发现与分享的音乐产品，依托专业音乐人、DJ、好友推荐及社交功能，为用户打造全新的音乐生活。" />
+    <link rel="shortcut icon" href="favicon.ico">
+    <!--
+        apple-touch-icon: 是苹果私有属性[apple safari 浏览器才可以识别使用]
+        作用：当将网页保存到主屏幕上的时候，用于设置显示的“图标”
+    -->
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">  <!-- 默认屏幕图片大小 -->
+    <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon114.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon180.png">
+    <script>
+      let scale = 1.0 / window.devicePixelRatio;
+      let text = `<meta name="viewport" content="width=device-width, initial-scale=${scale}, maximum-scale=${scale}, minimum-scale=${scale}, user-scalable=no">`;
+      document.write(text);
+      document.documentElement.style.fontSize = window.innerWidth / 7.5 + "px";
+      document.documentElement.setAttribute('data-dpr', window.devicePixelRatio + '')
+      document.documentElement.setAttribute('data-theme', 'theme')
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
+<!--
+1 初始化 HTML 代码
+2 利用 rem + 视口释放的方式来适配移动端
+  注意点：如果在 HTML 文件中用到了字符串模板，字符串模板中用到了变量，因为 html-plugin 是无法解析的，所以会报错
+  解决方法：借助 html-loader 【创建 vue.config.js 文件，配置文件】
+3 借助 POSTCSS-pxtorem 实现自动将 px 转换成 rem【创建 postcss.config.js 文件，配置文件 "postcss-pxtorem" 属性】
+4 借助 webpack 实现 CSS3 和 ES678 的语法兼容【通过 vue-CLI 安装的，则内部已经实现这2个功能，无需其他操作】
+  若需要修改浏览器兼容版本或者需要兼容的浏览器，是通过修改 .browserslistrc 文件，将兼容浏览器及兼容版本写入进去
+5 借助 fastclick 解决移动端100~300ms的点击事件延迟问题
+6 初始化默认的全局样式
+  注意点：在移动端中一般不会让字体大小随屏幕尺寸的变化而变化
+  由于我们是通过视口缩放来适配移动端，所以我们不能直接设置字体大小，否则字体大小就会随着屏幕尺寸的变化而变化
+  给根元素添加 data-dpr 属性，属性值为视口缩放的比率 window.devicePixelRatio：document.documentElement.setAttribute('data-dpr', window.devicePixelRatio + '')
+  不让字体的px单位转换成rem，这样字体大小也不会随视口大小变化，只需要将 px =》 Px，这样编译时不会把 px 转换成 rem
+7 纳入版本控制，通过 vue-cli 安装的，就已经纳入了版本控制
+  初始化 => 创建Develop分支 => 在Develop上创建Home分支
+-->
+
