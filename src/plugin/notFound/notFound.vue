@@ -18,7 +18,6 @@ export default {
   methods: {
     refresh () {
       this.isShow = false
-      console.log(this.$router)
     }
   }
 }

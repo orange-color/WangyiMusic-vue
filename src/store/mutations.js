@@ -40,7 +40,6 @@ export default {
       state.currentIndex = options.index
     }
     state.currentSong = state.songs[state.currentIndex]
-    console.log(state.currentSong)
   },
   [SET_SONG_LYRIC] (state, flag) {
     state.currentLyric = flag

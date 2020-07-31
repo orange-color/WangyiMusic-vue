@@ -33,7 +33,8 @@ export default {
     ...mapGetters([
       'favoriteList',
       'historyList',
-      'isPlaying'
+      'isPlaying',
+      'isSongsInit'
     ])
   },
   props: {
@@ -48,7 +49,8 @@ export default {
       'setFullScreen',
       'setMiniPlayer',
       'getSongDetail',
-      'setIsPlaying'
+      'setIsPlaying',
+      'setSongsInit'
     ]),
     play () {
       this.setIsPlaying(!this.isPlaying)
@@ -66,6 +68,9 @@ export default {
     switchNum () {
       const songs = (this.switchNum === 0) ? this.favoriteList : this.historyList
       this.songLength = songs.length
+      if (this.isSongsInit) {
+        this.setSongsInit(false)
+      }
     }
   },
   mounted () {
