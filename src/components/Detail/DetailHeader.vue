@@ -16,10 +16,10 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setSongInit'
+      'setSongsInit'
     ]),
     back () {
-      this.setSongInit(false)
+      this.setSongsInit(false)
       window.history.back()
     }
   },

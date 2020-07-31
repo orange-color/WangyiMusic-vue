@@ -45,7 +45,7 @@ export default {
       'getSongDetail',
       'setCurrentIndex',
       'setIsPlaying',
-      'setSongInit'
+      'setSongsInit'
     ]),
     selectMusic (index) {
       if (!this.isSongsInit) {
@@ -71,7 +71,7 @@ export default {
         return obj.id
       })
       this.getSongDetail({ ids: [ids], index: index })
-      this.setSongInit(true)
+      this.setSongsInit(true)
     }
   },
   computed: {

@@ -32,7 +32,7 @@ export default {
     ])
   },
   created () {
-    this.setSongInit(false)
+    this.setSongsInit(false)
   },
   methods: {
     // 全局共享数据工具 actions 方法的辅助函数 mapActions
@@ -42,7 +42,7 @@ export default {
       'setMiniPlayer',
       'getSongDetail',
       'setCurrentIndex',
-      'setSongInit'
+      'setSongsInit'
     ]),
     selectMusic (index) {
       if (!this.isSongsInit) {
@@ -50,7 +50,7 @@ export default {
           return obj.id
         })
         this.getSongDetail({ ids: [ids], index: index })
-        this.setSongInit(true)
+        this.setSongsInit(true)
       } else {
         this.setCurrentIndex(index)
       }

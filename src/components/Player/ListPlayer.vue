@@ -64,7 +64,8 @@ export default {
       'setListPlayer',
       'setDelSong',
       'setCurrentIndex',
-      'setFavoriteSong'
+      'setFavoriteSong',
+      'setSongsInit'
     ]),
     hidden () {
       this.setListPlayer(false)
@@ -99,10 +100,14 @@ export default {
         }
       }
       // 删除 songs 对应的数据
+      if (this.isSongsInit) {
+        this.setSongsInit(false)
+      }
       this.setDelSong(index)
     },
     delAll () {
       // 删除 songs 所有数据
+      this.setSongsInit(false)
       this.setDelSong()
     },
     // 切换播放状态
@@ -143,7 +148,8 @@ export default {
       'songs',
       'currentIndex',
       'currentSong',
-      'favoriteList'
+      'favoriteList',
+      'isSongsInit'
     ])
   },
   watch: {

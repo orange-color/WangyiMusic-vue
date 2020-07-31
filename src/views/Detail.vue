@@ -90,7 +90,7 @@ export default {
         }
       }
     })
-    this.setSongInit(false)
+    this.setSongsInit(false)
   },
   computed: {
     ...mapGetters([
@@ -107,7 +107,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setSongInit'
+      'setSongsInit'
     ])
   }
 }

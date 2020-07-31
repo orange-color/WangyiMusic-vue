@@ -15,7 +15,7 @@ import {
   SET_HISTORY_SONG,
   SET_HISTORY_LIST,
   SET_VOICE_VOLUME,
-  SET_SONG_INIT
+  SET_SONGS_INIT
 } from './mutations-type'
 
 // 导入获取数据的api
@@ -102,8 +102,8 @@ export default {
   setVoiceVolume ({ commit }, value) {
     commit(SET_VOICE_VOLUME, value)
   },
-  setSongInit ({ commit }, value) {
-    commit(SET_SONG_INIT, value)
+  setSongsInit ({ commit }, value) {
+    commit(SET_SONGS_INIT, value)
   }
 }
 // 返回歌词对象和歌词作者

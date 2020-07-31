@@ -15,7 +15,7 @@ import {
   SET_HISTORY_SONG,
   SET_HISTORY_LIST,
   SET_VOICE_VOLUME,
-  SET_SONG_INIT
+  SET_SONGS_INIT
 } from './mutations-type'
 
 export default {
@@ -108,7 +108,7 @@ export default {
     }
     state.voiceVolume = value
   },
-  [SET_SONG_INIT] (state, value) {
+  [SET_SONGS_INIT] (state, value) {
     state.isSongsInit = value
   }
 }
