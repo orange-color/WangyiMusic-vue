@@ -154,7 +154,12 @@ export default {
       @include bg_sub_color;
       border-bottom: 1px solid #cccccc;
       box-sizing: border-box;
-      opacity: 0;
+      opacity: 1;
+      visibility: hidden;
+      &.active{
+        opacity: 1;
+        visibility: inherit;
+      }
       .bottom-icon{
         width: 60px;
         height: 60px;

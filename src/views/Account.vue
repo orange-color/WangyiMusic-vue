@@ -51,7 +51,7 @@ export default {
     transform: translateX(100%);
   }
   .v-enter-active{
-    transition: all .5s linear 400ms;
+    transition: all .5s linear 350ms;
   }
   .v-enter-to{
     opacity: 1;
@@ -62,7 +62,7 @@ export default {
     transform: translateX(0);
   }
   .v-leave-active{
-    transition: all .5s linear;
+    transition: all .5s  ease-in-out;
   }
   .v-leave-to{
     opacity: 0;

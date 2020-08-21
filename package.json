@@ -13,6 +13,7 @@
     "fastclick": "^1.0.6",
     "iscroll": "^5.2.0",
     "postcss-loader": "^3.0.0",
+    "postcss-selector-parser": "^6.0.2",
     "swiper": "^5.4.5",
     "vconsole": "^3.3.4",
     "velocity-animate": "^1.5.2",

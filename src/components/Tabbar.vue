@@ -1,15 +1,15 @@
 <template>
   <div class="tabbar">
-    <router-link tag="div" class="item" to="/recommend">
+    <router-link tag="div" class="item" to="/home/recommend">
       <span>推荐</span>
     </router-link>
-    <router-link tag="div" class="item" to="/singer">
+    <router-link tag="div" class="item" to="/home/singer">
       <span>歌手</span>
     </router-link>
-    <router-link tag="div" class="item" to="/rank">
+    <router-link tag="div" class="item" to="/home/rank">
       <span>排行</span>
     </router-link>
-    <router-link tag="div" class="item" to="/search">
+    <router-link tag="div" class="item" to="/home/search">
       <span>搜索</span>
     </router-link>
   </div>

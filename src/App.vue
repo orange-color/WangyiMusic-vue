@@ -1,24 +1,23 @@
 <template>
-  <div id="app">
-    <MainHeader></MainHeader>
-    <Tabbar></Tabbar>
-    <keep-alive include="Singer">
+  <div class="app">
+    <keep-alive include="Login" exclude="Registration,Home">
       <router-view></router-view>
     </keep-alive>
-    <Player></Player>
+    <CheckError></CheckError>
   </div>
 </template>
 <script>
-import MainHeader from './components/MainHeader'
-import Tabbar from './components/Tabbar'
-import Player from './views/Player'
+import CheckError from './components/CheckError'
 export default {
   name: 'App',
   components: {
-    MainHeader,
-    Tabbar,
-    Player
+    CheckError
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .app{
+    width: 100%;
+    height: 100%;
+  }
+</style>

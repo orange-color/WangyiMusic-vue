@@ -119,7 +119,7 @@ export default {
       bottom: 0;
       right: 0;
       z-index: 20;
-      background: linear-gradient(to top,black,grey);
+      background: #000;
       overflow: hidden;
       img{
         position: absolute;

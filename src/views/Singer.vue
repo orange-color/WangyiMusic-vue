@@ -95,7 +95,7 @@ export default {
       this.keyDown(index)
     },
     selectSinger (id) {
-      this.$router.push(`/singer/detail/${id}/singer`)
+      this.$router.push(`/home/singer/detail/${id}/singer`)
     }
   },
   computed: {
@@ -226,7 +226,7 @@ export default {
     transform: translateX(100%);
   }
   .v-enter-active{
-    transition: all .5s linear 450ms;
+    transition: all .5s linear 350ms;
   }
   .v-enter-to{
     opacity: 1;

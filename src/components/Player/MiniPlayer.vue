@@ -101,13 +101,13 @@ export default {
           width: 75%;
           h3{
             @include font_size($font_medium);
-            @include font_color;
+            color: #eeeeee;
             font-weight: bold;
             @include no-wrap;
           }
           p{
             @include font_size($font_small);
-            @include font_color;
+            color: #eeeeee;
             @include no-wrap;
             opacity: 0.6;
           }

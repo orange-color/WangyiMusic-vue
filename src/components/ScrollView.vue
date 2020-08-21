@@ -36,12 +36,6 @@ export default {
     maxScrollY () {
       return this.iscroll.maxScrollY
     },
-    isScrollClick () {
-      const userAgent = navigator.userAgent
-      if (/iPhone|iPad|iPod|Macintosh/i.test(userAgent)) return false
-      if (/Chrome/i.test(userAgent)) return (/Android/i.test(userAgent))
-      if (/Android/i.test(userAgent)) return true
-    },
     scrollStart (fn) {
       this.iscroll.on('scrollStart', function () {
         fn()
@@ -55,8 +49,6 @@ export default {
   },
   mounted () {
     this.iscroll = new IScroll(this.$refs.wrapper, {
-      // 允许使用click事件
-      click: this.isScrollClick(),
       mouseWheel: true,
       scrollbars: false,
       // 设置回弹频率
@@ -66,7 +58,13 @@ export default {
       scrollY: true,
       disablePointer: true,
       disableTouch: false,
-      disableMouse: true
+      disableMouse: true,
+      hScrollbar: false,
+      vScrollbar: false,
+      // 关闭势能提高性能
+      momentum: true,
+      // 关闭阻止默认行为，如click
+      preventDefault: false
     })
     // 1 创建一个观察者对象
     /*

@@ -122,3 +122,9 @@ export const getTopListDetail = () => {
 }
 export const getSearchSuggest = (keywords) => Network.get(`/search?keywords=${keywords}`)
 export const getSearchHot = () => Network.get('/search/hot')
+// 登陆注册相关API
+export const getPhoneLogin = (phone, password) => Network.get(`/login/cellphone?phone=${phone}&password=${password}`)
+export const getEmailLogin = (email, password) => Network.get(`/login?email=${email}&password=${password}`)
+export const isCellphoneExistence = (phone) => Network.get(`/cellphone/existence/check?phone=${phone}`)
+export const setRegistration = (data) => Network.get('/register/cellphone', data)
+export const getVerificationCode = (phone) => Network.get(`/captcha/sent?phone=${phone}`)

@@ -15,7 +15,10 @@ import {
   SET_HISTORY_SONG,
   SET_HISTORY_LIST,
   SET_VOICE_VOLUME,
-  SET_SONGS_INIT
+  SET_SONGS_INIT,
+  IS_REMEMBER_PW,
+  SET_ERROR_MESSAGE,
+  IS_SHOW_ERROR
 } from './mutations-type'
 
 // 导入获取数据的api
@@ -104,6 +107,15 @@ export default {
   },
   setSongsInit ({ commit }, value) {
     commit(SET_SONGS_INIT, value)
+  },
+  setIsRememberPW ({ commit }, value) {
+    commit(IS_REMEMBER_PW, value)
+  },
+  setErrorMessage ({ commit }, value) {
+    commit(SET_ERROR_MESSAGE, value)
+  },
+  setIsShowError ({ commit }, value) {
+    commit(IS_SHOW_ERROR, value)
   }
 }
 // 返回歌词对象和歌词作者

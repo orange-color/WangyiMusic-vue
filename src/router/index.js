@@ -33,34 +33,72 @@ const Account = (resolve) => {
     resolve(module)
   })
 }
-
+const Login = (resolve) => {
+  import('../views/Login').then((module) => {
+    resolve(module)
+  })
+}
+const Registration = (resolve) => {
+  import('../views/Registration').then((module) => {
+    resolve(module)
+  })
+}
+const FoundPW = (resolve) => {
+  import('../views/FoundPW').then((module) => {
+    resolve(module)
+  })
+}
+const Home = (resolve) => {
+  import('../views/Home').then((module) => {
+    resolve(module)
+  })
+}
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', redirect: '/recommend' },
+  { path: '/', redirect: '/login' },
   {
-    path: '/recommend',
-    component: Recommend,
-    children: [
-      { path: 'detail/:id/:type', component: Detail }
-    ]
+    path: '/login',
+    component: Login
   },
   {
-    path: '/singer',
-    component: Singer,
-    children: [
-      { path: 'detail/:id/:type', component: Detail }
-    ]
+    path: '/registration',
+    component: Registration
   },
   {
-    path: '/rank',
-    component: Rank,
-    children: [
-      { path: 'detail/:id/:type', component: Detail }
-    ]
+    path: '/foundpassword',
+    component: FoundPW
   },
-  { path: '/search', component: Search },
-  { path: '/account', component: Account }
+  {
+    path: '/home',
+    component: Home,
+    children: [
+      { path: '/home', redirect: '/home/recommend' },
+      {
+        path: 'recommend',
+        component: Recommend,
+        children: [
+          { path: 'detail/:id/:type', component: Detail }
+        ]
+      },
+      {
+        path: 'singer',
+        component: Singer,
+        children: [
+          { path: 'detail/:id/:type', component: Detail }
+        ]
+      },
+      {
+        path: 'rank',
+        component: Rank,
+        children: [
+          { path: 'detail/:id/:type', component: Detail }
+        ]
+      },
+      { path: 'search', component: Search },
+      { path: 'account', component: Account }
+    ]
+  }
 ]
 
 const router = new VueRouter({

@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     accountClick () {
-      this.$router.push('/account')
+      this.$router.push('/home/account')
     }
   }
 }

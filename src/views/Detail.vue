@@ -66,15 +66,13 @@ export default {
     const elePlayAll = this.$refs.detailBottom.$el.children[1]
     this.$refs.scrollView.scrolling(offset => {
       this.currentY = offset
+      // 初始位置 offset = 0
       if (offset > 0) {
         // + 向下滚动 放大
         const scale = 1 + offset / defaultHeight
         this.$refs.banner.$el.style.transform = `scale(${scale})`
         // bottom 头部样式恢复
-        if (offset >= bannerclientH) {
-          elePlayAll.style.opacity = 0
-          elePlayAll.style.top = bannerclientH - offset + 'px'
-        }
+        elePlayAll.classList.remove('active')
       } else {
         // - 向上滚动 缩小 模糊
         // banner 区域动画效果
@@ -85,7 +83,7 @@ export default {
         }
         // bottom 头部吸顶效果
         if (offset <= bannerclientH) {
-          elePlayAll.style.opacity = 1
+          elePlayAll.classList.add('active')
           elePlayAll.style.top = bannerclientH - offset + 'px'
         }
       }

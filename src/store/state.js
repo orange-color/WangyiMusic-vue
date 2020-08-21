@@ -15,5 +15,8 @@ export default {
   favoriteList: [],
   historyList: [],
   voiceVolume: 0.5,
-  iScroll: null
+  iScroll: null,
+  isRememberPW: false,
+  errorMessage: '',
+  isShowError: false
 }

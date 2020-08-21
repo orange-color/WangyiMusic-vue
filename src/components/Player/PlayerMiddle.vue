@@ -289,6 +289,7 @@ export default {
             box-sizing: border-box;
             &.active{
               color: #ffffff;
+              font-weight: bolder;
             }
           }
         }
