@@ -1,7 +1,7 @@
 <template>
   <div class="singer">
     <div class="singer-wrapper">
-      <ScrollView ref="iscroll">
+      <ScrollView ref="iscroll" :probeType="probeType">
         <ul class="list-wrapper">
           <li class="list-group" v-for="(value, index) in list" :key="index" ref="groupList">
             <h2 class="group-title">{{keys[index]}}</h2>
@@ -27,15 +27,16 @@
         >{{value}}</li>
       </ul>
     </div>
-    <transition>
+    <TransitionItem :delay="enterDelay">
       <router-view></router-view>
-    </transition>
+    </TransitionItem>
   </div>
 </template>
 
 <script>
 import { getAllArtists } from '../api/index'
 import ScrollView from '../components/ScrollView'
+import TransitionItem from '../components/TransitionItem'
 export default {
   name: 'Singer',
   data: function () {
@@ -45,13 +46,16 @@ export default {
       currentIndex: 0,
       groupsTop: [],
       isKeyMove: false,
+      probeType: 3,
       beginY: 0,
       scrollY: 0,
-      titleHeight: 0
+      titleHeight: 0,
+      enterDelay: 1000
     }
   },
   components: {
-    ScrollView
+    ScrollView,
+    TransitionItem
   },
   created () {
     getAllArtists().then((obj) => {
@@ -108,33 +112,35 @@ export default {
     }
   },
   mounted () {
-    this.$refs.iscroll.scrolling((y) => {
-      this.scrollY = y
-      if (y > 0 || y < this.$refs.iscroll.maxScrollY()) return
-      const groupsTop = this.groupsTop
-      let currentIndex = this.currentIndex
-      const y0 = -groupsTop[currentIndex]
-      const y1 = -groupsTop[currentIndex + 1]
-      if (y > y0) {
-        // 下拉
-        --currentIndex
-        // 标题固定到顶部
-        this.$refs.fixTitle.style.top = 0 + 'px'
-      } else if (y <= y1) {
-        // 上拉
-        ++currentIndex
-        // 标题固定到顶部
-        this.$refs.fixTitle.style.top = 0 + 'px'
-      } else {
-        // currentIndex 不变
-        // 标题上推
-        const isTitleY = y - y1
-        if (isTitleY <= this.titleHeight && isTitleY > 0) {
-          this.$refs.fixTitle.style.top = isTitleY - this.titleHeight + 'px'
+    setTimeout(() => {
+      this.$refs.iscroll.scrolling((y) => {
+        this.scrollY = y
+        if (y > 0 || y < this.$refs.iscroll.maxScrollY()) return
+        const groupsTop = this.groupsTop
+        let currentIndex = this.currentIndex
+        const y0 = -groupsTop[currentIndex]
+        const y1 = -groupsTop[currentIndex + 1]
+        if (y > y0) {
+          // 下拉
+          --currentIndex
+          // 标题固定到顶部
+          this.$refs.fixTitle.style.top = 0 + 'px'
+        } else if (y <= y1) {
+          // 上拉
+          ++currentIndex
+          // 标题固定到顶部
+          this.$refs.fixTitle.style.top = 0 + 'px'
+        } else {
+          // currentIndex 不变
+          // 标题上推
+          const isTitleY = y - y1
+          if (isTitleY <= this.titleHeight && isTitleY > 0) {
+            this.$refs.fixTitle.style.top = isTitleY - this.titleHeight + 'px'
+          }
         }
-      }
-      this.currentIndex = currentIndex
-    })
+        this.currentIndex = currentIndex
+      })
+    }, 200)
   }
 }
 </script>
@@ -219,28 +225,5 @@ export default {
         }
       }
     }
-  }
-  /*transition标签的过渡动画效果*/
-  .v-enter{
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  .v-enter-active{
-    transition: all .5s linear 350ms;
-  }
-  .v-enter-to{
-    opacity: 1;
-    transform: translateX(0);
-  }
-  .v-leave{
-    opacity: 1;
-    transform: translateX(0);
-  }
-  .v-leave-active{
-    transition: all .5s ease-in-out;
-  }
-  .v-leave-to{
-    opacity: 0;
-    transform: translateX(100%);
   }
 </style>

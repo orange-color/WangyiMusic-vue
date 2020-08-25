@@ -121,10 +121,10 @@ export default {
     loginCheck (account, password) {
       // 判断是手机登录还是邮箱登录
       let getLogin
-      if (/^\d{11}$/.test(account)) {
+      if (/^1[0-9]{10}$/.test(account)) {
         // 手机登录
         getLogin = getPhoneLogin
-      } else if (/^(\d|\w){6,18}@163.com$/.test(account)) {
+      } else if (/^[0-9a-zA-Z]{6,18}@163.com$/.test(account)) {
         // 邮箱登录
         getLogin = getEmailLogin
       } else {

@@ -136,9 +136,10 @@ export default {
       this.hots = data.result.hots
     }).catch(err => {
       console.log(err)
+    }).finally(() => {
+      if (!getLocalStorage('searchHistory')) return
+      this.searchHistory = getLocalStorage('searchHistory')
     })
-    if (!getLocalStorage('searchHistory')) return
-    this.searchHistory = getLocalStorage('searchHistory')
   },
   mounted () {
     // 处理移动端软键盘显示底部控件上移问题
@@ -153,12 +154,14 @@ export default {
       }
     }
     // 监听滚动开始事件，软键盘隐藏
-    this.$refs.suggestScrollVue.scrollStart(() => {
-      this.blur()
-    })
-    this.$refs.infoScrollVue.scrollStart(() => {
-      this.blur()
-    })
+    setTimeout(() => {
+      this.$refs.suggestScrollVue.scrollStart(() => {
+        this.blur()
+      })
+      this.$refs.infoScrollVue.scrollStart(() => {
+        this.blur()
+      })
+    }, 200)
   }
 }
 </script>
@@ -197,6 +200,7 @@ export default {
         left: 20px;
         width: 40px;
         height: 40px;
+        background: transparent;
         transform: translateY(-50%);
       }
     }

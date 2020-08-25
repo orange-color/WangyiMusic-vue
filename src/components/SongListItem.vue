@@ -28,7 +28,9 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'isSongsInit'
+      'isSongsInit',
+      'isShowMiniPlayer',
+      'isPlaying'
     ])
   },
   created () {
@@ -42,9 +44,13 @@ export default {
       'setMiniPlayer',
       'getSongDetail',
       'setCurrentIndex',
-      'setSongsInit'
+      'setSongsInit',
+      'setIsPlaying'
     ]),
     selectMusic (index) {
+      if (!this.isShowMiniPlayer) {
+        this.setFullScreen(true)
+      }
       if (!this.isSongsInit) {
         const ids = this.songs.map(function (obj) {
           return obj.id
@@ -54,7 +60,9 @@ export default {
       } else {
         this.setCurrentIndex(index)
       }
-      this.setFullScreen(true)
+      if (!this.isPlaying) {
+        this.setIsPlaying(true)
+      }
     }
   }
 }

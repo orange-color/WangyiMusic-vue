@@ -2,7 +2,7 @@
     <div class="home">
       <MainHeader></MainHeader>
       <Tabbar></Tabbar>
-      <keep-alive include="Singer">
+      <keep-alive include="Recommend,Singer,Rank,Search">
         <router-view></router-view>
       </keep-alive>
       <Player></Player>

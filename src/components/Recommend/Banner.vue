@@ -3,7 +3,7 @@
     <!--slides-->
     <swiper-slide v-for="value in banners" :key="value.bannerId" class="item">
       <a :href="value.url">
-        <img :src="value.pic" alt="">
+        <img :src="value.pic" alt="" />
       </a>
     </swiper-slide>
     <div class="swiper-pagination" slot="pagination"></div>
@@ -25,7 +25,7 @@ export default {
         loop: true,
         autoplay: {
           // 自动切换的事件间隔，单位 ms
-          delay: 1000,
+          delay: 2000,
           // 当切换到最后一个slide时停止自动切换
           // 用户操作 swiper 之后，是否禁止 autoplay
           stopOnLastSlide: false,

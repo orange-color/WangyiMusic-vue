@@ -1,9 +1,9 @@
 <template>
-  <div class="detail">
+  <div class="detail" v-show="playlist.coverImgUrl !== undefined">
     <DetailHeader :title="playlist.name" ref="header"></DetailHeader>
     <DetailBanner :path="playlist.coverImgUrl" ref="banner"></DetailBanner>
-    <div class="bottom" ref="bottom">
-      <ScrollView ref="scrollView">
+    <div class="bottom" ref="bottom" v-show="playlist.tracks !== undefined">
+      <ScrollView ref="scrollView" :probeType="probeType">
         <DetailBottom :playlist="playlist.tracks" ref="detailBottom"></DetailBottom>
       </ScrollView>
     </div>
@@ -22,7 +22,8 @@ export default {
   data: () => ({
     playlist: {},
     headerHeight: 0,
-    currentY: 0
+    currentY: 0,
+    probeType: 3
   }),
   components: {
     DetailHeader,
@@ -61,34 +62,14 @@ export default {
     }
   },
   mounted () {
-    const bannerclientH = this.$refs.header.$el.offsetHeight - this.$refs.bottom.offsetTop
-    const defaultHeight = this.$refs.banner.$el.offsetHeight
-    const elePlayAll = this.$refs.detailBottom.$el.children[1]
-    this.$refs.scrollView.scrolling(offset => {
-      this.currentY = offset
-      // 初始位置 offset = 0
-      if (offset > 0) {
-        // + 向下滚动 放大
-        const scale = 1 + offset / defaultHeight
-        this.$refs.banner.$el.style.transform = `scale(${scale})`
-        // bottom 头部样式恢复
-        elePlayAll.classList.remove('active')
-      } else {
-        // - 向上滚动 缩小 模糊
-        // banner 区域动画效果
-        this.$refs.banner.$el.style.transform = `translateY(${offset / 2}px)`
-        const scale = Math.abs(offset) / defaultHeight
-        if (scale <= 1) {
-          this.$refs.banner.changeMask(scale)
-        }
-        // bottom 头部吸顶效果
-        if (offset <= bannerclientH) {
-          elePlayAll.classList.add('active')
-          elePlayAll.style.top = bannerclientH - offset + 'px'
-        }
+    // 由于detail在请求到数据后在显示，这样需要一定的时间，故mounted需要进行延迟
+    const timerId = setInterval(() => {
+      if (this.$refs.bottom.offsetTop) {
+        this.initDetail()
+        this.setSongsInit(false)
+        clearInterval(timerId)
       }
-    })
-    this.setSongsInit(false)
+    }, 200)
   },
   computed: {
     ...mapGetters([
@@ -106,7 +87,41 @@ export default {
   methods: {
     ...mapActions([
       'setSongsInit'
-    ])
+    ]),
+    initDetail () {
+      const oBanner = this.$refs.banner.$el
+      const bannerclientH = this.$refs.header.$el.offsetHeight - this.$refs.bottom.offsetTop
+      const defaultHeight = oBanner.offsetHeight
+      const oPlayAll2 = this.$refs.detailBottom.$el.children[1]
+      this.$refs.scrollView.scrolling(offset => {
+        this.currentY = offset
+        // 初始位置 offset = 0
+        if (offset >= 0) {
+          // + 向下滚动 放大
+          const scale = 1 + offset / defaultHeight
+          oBanner.style.transform = `scale(${scale})`
+        } else {
+          // - 向上滚动 缩小 模糊
+          // banner 区域动画效果
+          oBanner.style.transform = `translateY(${offset / 2}px)`
+          const scale = Math.abs(offset) / defaultHeight
+          if (scale <= 1) {
+            this.$refs.banner.changeMask(scale)
+          }
+          if (offset <= bannerclientH) {
+            // bottom 头部吸顶效果
+            oPlayAll2.classList.add('active')
+            oPlayAll2.style.transform = `translateY(${bannerclientH - offset}px)`
+          } else {
+            // bottom 头部样式恢复
+            oPlayAll2.classList.remove('active')
+          }
+        }
+      })
+    }
+  },
+  beforeDestroy () {
+    this.$refs.scrollView.destroy()
   }
 }
 </script>

@@ -55,6 +55,7 @@ export const getAllArtists = () => {
   })
 }
 export const getSingerDetail = (data) => Network.get('/artists', data)
+// 获取排行榜列表
 export const getTopListDetail = () => {
   return new Promise(function (resolve, reject) {
     Network.get('/toplist/detail').then(data => {
@@ -77,7 +78,7 @@ export const getTopListDetail = () => {
           { name: '美国Billboard周榜', key: 6 },
           { name: 'UK排行榜周榜', key: 5 },
           { name: 'Beatport全球电子舞曲榜', key: 21 },
-          { name: '日本Oricon周榜', key: 10 },
+          { name: '日本Oricon数字单曲周榜', key: 10 },
           { name: 'iTunes榜', key: 8 },
           { name: '英国Q杂志中文版周榜', key: 29 }
         ],

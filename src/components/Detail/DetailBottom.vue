@@ -2,7 +2,7 @@
   <div class="detail-bottom">
     <ul>
       <li class="bottom-top" @click.stop="selectAllMusic">
-        <div class="bottom-icon" :class="{'active':isPlaying}" @click.stop="play"></div>
+        <div class="bottom-icon" :class="{'active':isPlaying}"></div>
         <div class="bottom-title">播放全部</div>
       </li>
       <li class="bottom-item" v-for="(value,index) in playlist" :key="value.id" @click.stop="selectMusic(index)">
@@ -13,8 +13,8 @@
         <div class="item-right"></div>
       </li>
     </ul>
-    <div class="bottom-top2" @click.stop="selectAllMusic" ref="elePlayAll">
-      <div class="bottom-icon" :class="{'active':isPlaying}" @click.stop="play"></div>
+    <div class="bottom-top2" @click.stop="selectAllMusic" ref="oPlayAll2">
+      <div class="bottom-icon" :class="{'active':isPlaying}"></div>
       <div class="bottom-title">播放全部</div>
     </div>
   </div>
@@ -48,23 +48,28 @@ export default {
       'setSongsInit'
     ]),
     selectMusic (index) {
+      if (!this.isShowMiniPlayer) {
+        this.setFullScreen(true)
+      }
       if (!this.isSongsInit) {
         this.songsInit(index)
       } else {
         this.setCurrentIndex(index)
       }
-      this.setFullScreen(true)
+      if (!this.isPlaying) {
+        this.setIsPlaying(true)
+      }
     },
     selectAllMusic () {
+      this.setFullScreen(true)
       if (!this.isSongsInit) {
         this.songsInit(0)
       } else {
         this.setCurrentIndex(0)
       }
-      this.setFullScreen(true)
-    },
-    play () {
-      this.setIsPlaying(!this.isPlaying)
+      if (!this.isPlaying) {
+        this.setIsPlaying(true)
+      }
     },
     songsInit (index) {
       const ids = this.playlist.map(function (obj) {
@@ -77,7 +82,8 @@ export default {
   computed: {
     ...mapGetters([
       'isPlaying',
-      'isSongsInit'
+      'isSongsInit',
+      'isShowMiniPlayer'
     ])
   }
 }
@@ -139,7 +145,8 @@ export default {
         .item-right{
           width: 50px;
           height: 50px;
-          @include bg_img('../../assets/images/small_play')
+          @include bg_img('../../assets/images/small_play');
+          opacity: 0.6;
         }
       }
     }
@@ -154,7 +161,7 @@ export default {
       @include bg_sub_color;
       border-bottom: 1px solid #cccccc;
       box-sizing: border-box;
-      opacity: 1;
+      opacity: 0;
       visibility: hidden;
       &.active{
         opacity: 1;

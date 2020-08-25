@@ -1,22 +1,23 @@
 <template>
   <transition
     :css="false"
+    @before-enter='beforeEnter'
     @enter="enter"
     @leave="leave"
   >
     <div class="normal-player" v-show="this.isFullScreen">
+      <div class="player-bg">
+        <img :src="currentSong.picUrl" alt="">
+      </div>
       <div class="player-wrapper">
         <PlayerHeader></PlayerHeader>
         <PlayerMiddle :currentTime="currentTime"></PlayerMiddle>
         <PlayerBottom :totalTime="totalTime" :currentTime="currentTime"></PlayerBottom>
       </div>
-      <div class="player-bg">
-        <img v-lazy="currentSong.picUrl" alt="">
-      </div>
       <div class="canplay" v-show="!canPlay">
         <div class="canplay-wrapper">
           <div class="vip-link">
-            <img v-lazy="currentSong.picUrl" alt="">
+            <img :src="currentSong.picUrl" alt="">
             <span>VIP</span>
           </div>
           <p>主人快加入 VIP 的队伍吧~</p>
@@ -62,9 +63,14 @@ export default {
       'setSongLyric',
       'setIsPlaying'
     ]),
+    beforeEnter (el) {
+      Velocity(el, { opacity: 0 }, { duration: 300 })
+    },
     enter (el, done) {
-      Velocity(el, 'transition.slideUpIn', { duration: 500, delay: 200 }, function () {
-        done()
+      this.$nextTick(() => {
+        Velocity(el, 'transition.slideUpIn', { duration: 500 }, function () {
+          done()
+        })
       })
     },
     leave (el, done) {

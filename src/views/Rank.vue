@@ -31,23 +31,26 @@
         </ul>
       </ScrollView>
     </div>
-    <transition>
+    <TransitionItem :delay="enterDelay">
       <router-view></router-view>
-    </transition>
+    </TransitionItem>
   </div>
 </template>
 
 <script>
 import { getTopListDetail } from '../api/index'
 import ScrollView from '../components/ScrollView'
+import TransitionItem from '../components/TransitionItem'
 export default {
   name: 'Rank',
   components: {
-    ScrollView
+    ScrollView,
+    TransitionItem
   },
   data: function () {
     return {
-      category: {}
+      category: {},
+      enterDelay: 600
     }
   },
   created () {
@@ -157,28 +160,5 @@ export default {
         }
       }
     }
-  }
-  /*transition标签的过渡动画效果*/
-  .v-enter{
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  .v-enter-active{
-    transition: all .5s linear 450ms;
-  }
-  .v-enter-to{
-    opacity: 1;
-    transform: translateX(0);
-  }
-  .v-leave{
-    opacity: 1;
-    transform: translateX(0);
-  }
-  .v-leave-active{
-    transition: all .5s  ease-in-out;
-  }
-  .v-leave-to{
-    opacity: 0;
-    transform: translateX(100%);
   }
 </style>

@@ -17,6 +17,7 @@ export default {
   },
   methods: {
     refresh () {
+      this.$forceUpdate()
       this.isShow = false
     }
   }

@@ -43,6 +43,48 @@ export default {
       'isShowMiniPlayer'
     ])
   },
+  created () {
+    // 1 监听收藏列表变化
+    const favoriteList = getLocalStorage('favoriteList')
+    // 初始化收藏列表，localStorage初始化为 null
+    if (!favoriteList) return
+    this.setFavoriteList(favoriteList)
+    // 2 监听历史播放列表变化
+    const historyList = getLocalStorage('historyList')
+    // 初始化收藏列表，localStorage初始化为 null
+    if (!historyList) return
+    this.setHistoryList(historyList)
+  },
+  mounted () {
+    const Audio = this.$refs.audio
+    Audio.ondurationchange = () => {
+      this.totalTime = Audio.duration
+      Audio.volume = this.voiceVolume
+    }
+  },
+  methods: {
+    ...mapActions([
+      'setCurrentIndex',
+      'setFavoriteList',
+      'setHistorySong',
+      'setHistoryList',
+      'setVoiceVolume',
+      'setIsPlaying'
+    ]),
+    timeupdate (e) {
+      this.currentTime = e.target.currentTime
+    },
+    end () {
+      if (this.modeType === mode.loop) {
+        this.setCurrentIndex(this.currentIndex + 1)
+      } else if (this.modeType === mode.random) {
+        this.setCurrentIndex(getRandom(this.songs.length - 1, 0))
+      }
+      setTimeout(() => {
+        this.$refs.audio.play()
+      }, 100)
+    }
+  },
   watch: {
     isPlaying (newValue, oldValue) {
       if (newValue) {
@@ -94,48 +136,6 @@ export default {
     },
     voiceVolume (newValue) {
       this.$refs.audio.volume = newValue
-    }
-  },
-  created () {
-    // 1 监听收藏列表变化
-    const favoriteList = getLocalStorage('favoriteList')
-    // 初始化收藏列表，localStorage初始化为 null
-    if (!favoriteList) return
-    this.setFavoriteList(favoriteList)
-    // 2 监听历史播放列表变化
-    const historyList = getLocalStorage('historyList')
-    // 初始化收藏列表，localStorage初始化为 null
-    if (!historyList) return
-    this.setHistoryList(historyList)
-  },
-  mounted () {
-    const Audio = this.$refs.audio
-    Audio.ondurationchange = () => {
-      this.totalTime = Audio.duration
-      Audio.volume = this.voiceVolume
-    }
-  },
-  methods: {
-    ...mapActions([
-      'setCurrentIndex',
-      'setFavoriteList',
-      'setHistorySong',
-      'setHistoryList',
-      'setVoiceVolume',
-      'setIsPlaying'
-    ]),
-    timeupdate (e) {
-      this.currentTime = e.target.currentTime
-    },
-    end () {
-      if (this.modeType === mode.loop) {
-        this.setCurrentIndex(this.currentIndex + 1)
-      } else if (this.modeType === mode.random) {
-        this.setCurrentIndex(getRandom(this.songs.length - 1, 0))
-      }
-      setTimeout(() => {
-        this.$refs.audio.play()
-      }, 100)
     }
   }
 }

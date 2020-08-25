@@ -3,7 +3,7 @@
     <swiper-slide class="cd">
       <div>
         <div class="cd-wrapper" ref="cdWrapper">
-          <img v-lazy="currentSong.picUrl" alt="">
+          <img :src="currentSong.picUrl" alt="">
         </div>
         <p v-html="getFirstLyric()"></p>
       </div>
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="lyric-content">
-        <ScrollView ref="iscroll">
+        <ScrollView ref="scrollView">
           <ul ref="lyricBox" class="lyricBox">
             <li ref="lyric" v-for="(value,time) in this.currentLyric" :class="{'active': (currentLineNum===time)}" :key="time" v-html="value"></li>
             <li v-for="value in this.lyricAuthor" :key="value">{{value}}</li>
@@ -66,7 +66,8 @@ export default {
       currentLineNum: '0',
       firstLyric: '0',
       isScrolling: false,
-      timerId: null
+      timerId: null,
+      prevActiveLi: null
     }
   },
   props: {
@@ -82,11 +83,15 @@ export default {
       'currentSong',
       'currentLyric',
       'lyricAuthor',
-      'curTime'
+      'isFullScreen'
     ])
   },
   watch: {
-    isPlaying (newValue, oldValue) {
+    currentSong () {
+      // 切换歌曲后，重置 prevActiveLi
+      this.prevActiveLi = null
+    },
+    isPlaying (newValue) {
       if (newValue) {
         // 播放
         this.$refs.cdWrapper.classList.add('active')
@@ -95,8 +100,8 @@ export default {
         this.$refs.cdWrapper.classList.remove('active')
       }
     },
-    currentTime (newValue, oldValue) {
-      if (this.currentLyric.length === 0) return
+    currentTime (newValue) {
+      if (!this.isFullScreen) return
       // 1 歌词高亮同步
       const lineNum = Math.floor(newValue) + ''
       // 若歌词列表中查找不到当前时间的key，则递减查找前一句
@@ -105,10 +110,22 @@ export default {
       if (this.isScrolling) return
       const activeLi = document.querySelector('.lyricBox>li.active')
       if (!activeLi) return
-      this.$refs.iscroll.scrollTo(0, -activeLi.offsetTop, 1000)
+      if (!this.prevActiveLi) {
+        // 初始化复位
+        clearTimeout(this.timerId)
+        this.$refs.scrollView.scrollTo(0, -activeLi.offsetTop, 1000)
+        this.prevActiveLi = activeLi
+        this.$refs.scrollView.refresh()
+      } else {
+        // 跳到下一句歌词时滚动
+        if (activeLi.className !== this.prevActiveLi.className) {
+          this.$refs.scrollView.scrollTo(0, -activeLi.offsetTop, 1000)
+          this.prevActiveLi = activeLi
+        }
+      }
     },
     // 初始化第一句歌词高亮
-    currentLyric (newValue, oldValue) {
+    currentLyric (newValue) {
       for (const key in newValue) {
         this.firstLyric = this.currentLineNum = key
         return false
@@ -163,16 +180,19 @@ export default {
     }
   },
   mounted () {
-    this.$refs.iscroll.scrollStart(() => {
-      this.timerId && clearTimeout(this.timerId)
-      this.isScrolling = true
-    })
-    this.$refs.iscroll.scrollEnd(() => {
-      if (!this.isScrolling) return
-      this.timerId = setTimeout(() => {
-        this.isScrolling = false
-      }, 5000)
-    })
+    // 预留功能，手动滚动歌词，手动选中歌词对应播放时间播放
+    setTimeout(() => {
+      this.$refs.scrollView.scrollStart(() => {
+        this.timerId && clearTimeout(this.timerId)
+        this.isScrolling = true
+      })
+      this.$refs.scrollView.scrollEnd(() => {
+        if (!this.isScrolling) return
+        this.timerId = setTimeout(() => {
+          this.isScrolling = false
+        }, 5000)
+      })
+    }, 200)
   }
 }
 </script>

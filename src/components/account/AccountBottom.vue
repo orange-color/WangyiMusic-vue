@@ -1,7 +1,7 @@
 <template>
   <div class="account-bottom">
     <div class="bottom-play" @click.stop="selectAllMusic" v-show="songLength !== 0">
-      <span :class="{'active':isPlaying}" @click.stop="play"></span>
+      <span :class="{'active':isPlaying}"></span>
       <span>播放全部</span>
     </div>
     <div class="no-list" v-show="switchNum === 0 && songLength === 0">主人还没有收藏喜欢的歌曲哦~</div>
@@ -52,9 +52,6 @@ export default {
       'setIsPlaying',
       'setSongsInit'
     ]),
-    play () {
-      this.setIsPlaying(!this.isPlaying)
-    },
     selectAllMusic () {
       this.setFullScreen(true)
       const songs = (this.switchNum === 0) ? this.favoriteList : this.historyList
