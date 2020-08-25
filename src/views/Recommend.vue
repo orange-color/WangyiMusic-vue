@@ -109,7 +109,6 @@ export default {
   .recommend {
     width: 100%;
     height: 100%;
-
     .recommend-wrapper {
       position: fixed;
       top: 184px;
