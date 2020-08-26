@@ -1,15 +1,16 @@
 <template>
-  <transition>
+  <TransitionItem>
     <div class="account">
       <AccountHeader @getSwitchNum="getSwitchNum"></AccountHeader>
       <AccountBottom :switchNum="switchNum"></AccountBottom>
     </div>
-  </transition>
+  </TransitionItem>
 </template>
 
 <script>
 import AccountHeader from '../components/account/AccountHeader'
 import AccountBottom from '../components/account/AccountBottom'
+import TransitionItem from '../components/TransitionItem'
 export default {
   name: 'Account',
   data: function () {
@@ -24,7 +25,8 @@ export default {
   },
   components: {
     AccountHeader,
-    AccountBottom
+    AccountBottom,
+    TransitionItem
   },
   methods: {
     getSwitchNum (num) {
@@ -44,28 +46,5 @@ export default {
     top: 0;
     bottom: 0;
     @include bg_sub_color;
-  }
-  /*transition标签的过渡动画效果*/
-  .v-enter{
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  .v-enter-active{
-    transition: all .5s linear 350ms;
-  }
-  .v-enter-to{
-    opacity: 1;
-    transform: translateX(0);
-  }
-  .v-leave{
-    opacity: 1;
-    transform: translateX(0);
-  }
-  .v-leave-active{
-    transition: all .5s  ease-in-out;
-  }
-  .v-leave-to{
-    opacity: 0;
-    transform: translateX(100%);
   }
 </style>

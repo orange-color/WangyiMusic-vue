@@ -27,7 +27,7 @@
         >{{value}}</li>
       </ul>
     </div>
-    <TransitionItem :delay="enterDelay">
+    <TransitionItem>
       <router-view></router-view>
     </TransitionItem>
   </div>
@@ -49,8 +49,7 @@ export default {
       probeType: 3,
       beginY: 0,
       scrollY: 0,
-      titleHeight: 0,
-      enterDelay: 1000
+      titleHeight: 0
     }
   },
   components: {

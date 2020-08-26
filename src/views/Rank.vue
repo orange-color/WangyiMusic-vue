@@ -31,7 +31,7 @@
         </ul>
       </ScrollView>
     </div>
-    <TransitionItem :delay="enterDelay">
+    <TransitionItem>
       <router-view></router-view>
     </TransitionItem>
   </div>
@@ -49,8 +49,7 @@ export default {
   },
   data: function () {
     return {
-      category: {},
-      enterDelay: 600
+      category: {}
     }
   },
   created () {

@@ -3,7 +3,7 @@
     <swiper-slide class="cd">
       <div>
         <div class="cd-wrapper" ref="cdWrapper">
-          <img :src="currentSong.picUrl" alt="">
+          <img v-lazy="currentSong.picUrl" alt="">
         </div>
         <p v-html="getFirstLyric()"></p>
       </div>
@@ -228,6 +228,7 @@ export default {
             width: 100%;
             height: 100%;
             border-radius: 50%;
+            background: transparent;
           }
         }
         p{

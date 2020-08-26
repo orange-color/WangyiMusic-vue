@@ -10,7 +10,7 @@
         </div>
       </ScrollView>
     </div>
-    <TransitionItem :delay="enterDelay">
+    <TransitionItem>
       <router-view></router-view>
     </TransitionItem>
     <img src="" alt="" id="test">
@@ -32,7 +32,6 @@ export default {
       personalized: [],
       albums: [],
       songs: [],
-      enterDelay: 500,
       isRefresh: false
     }
   },

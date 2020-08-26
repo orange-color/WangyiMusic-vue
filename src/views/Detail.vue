@@ -63,7 +63,12 @@ export default {
   },
   mounted () {
     // 由于detail在请求到数据后在显示，这样需要一定的时间，故mounted需要进行延迟
+    const time1 = new Date().getTime()
     const timerId = setInterval(() => {
+      const time2 = new Date().getTime()
+      if (time2 - time1 > 1000) {
+        clearInterval(timerId)
+      }
       if (this.$refs.bottom.offsetTop) {
         this.initDetail()
         this.setSongsInit(false)
