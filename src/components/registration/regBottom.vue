@@ -76,6 +76,7 @@ export default {
       this[item] = ''
       if (item === 'cellphone') {
         this.cpCheckMessage = ''
+        this.isCellphoneCanuse = false
       }
     },
     sendVerificationCode () {
@@ -124,7 +125,10 @@ export default {
       this.cpCheckMessage = ''
     },
     submit () {
-      if (!this.nickname || !this.password || !this.captcha) return
+      if (!this.nickname || !this.password || !this.captcha) {
+        this.checkError('请完善资料！')
+        return
+      }
       setRegistration({
         phone: this.cellphone,
         password: this.password,
