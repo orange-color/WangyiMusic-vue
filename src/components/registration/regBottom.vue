@@ -83,7 +83,7 @@ export default {
       if (this.isCellphoneCanuse) {
         const time1 = new Date().getTime()
         this.isCellphoneCanuse = false
-        getVerificationCode(this.cellphone).then(() => {
+        getVerificationCode(this.cellphone, new Date().getTime()).then(() => {
           // 已发送
           this.sendBtn = this.countTime + ' s'
           const timerId = setInterval(() => {

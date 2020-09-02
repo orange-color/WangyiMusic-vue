@@ -55,9 +55,6 @@ export default {
   isSongsInit (state) {
     return state.isSongsInit
   },
-  getIsRememberPW (state) {
-    return state.isRememberPW
-  },
   getErrorMessage (state) {
     return state.errorMessage
   },

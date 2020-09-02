@@ -16,7 +16,6 @@ import {
   SET_HISTORY_LIST,
   SET_VOICE_VOLUME,
   SET_SONGS_INIT,
-  IS_REMEMBER_PW,
   SET_ERROR_MESSAGE,
   IS_SHOW_ERROR
 } from './mutations-type'
@@ -112,9 +111,6 @@ export default {
   },
   [SET_SONGS_INIT] (state, value) {
     state.isSongsInit = value
-  },
-  [IS_REMEMBER_PW] (state, value) {
-    state.isRememberPW = value
   },
   [SET_ERROR_MESSAGE] (state, value) {
     state.errorMessage = value

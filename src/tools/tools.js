@@ -30,3 +30,6 @@ export const setLocalStorage = (key, value) => {
 export const getLocalStorage = (key) => {
   return JSON.parse(window.localStorage.getItem(key))
 }
+export const getNewTime = () => {
+  return new Date().getTime()
+}

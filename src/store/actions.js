@@ -16,7 +16,6 @@ import {
   SET_HISTORY_LIST,
   SET_VOICE_VOLUME,
   SET_SONGS_INIT,
-  IS_REMEMBER_PW,
   SET_ERROR_MESSAGE,
   IS_SHOW_ERROR
 } from './mutations-type'
@@ -107,9 +106,6 @@ export default {
   },
   setSongsInit ({ commit }, value) {
     commit(SET_SONGS_INIT, value)
-  },
-  setIsRememberPW ({ commit }, value) {
-    commit(IS_REMEMBER_PW, value)
   },
   setErrorMessage ({ commit }, value) {
     commit(SET_ERROR_MESSAGE, value)

@@ -22,7 +22,7 @@
         <label for="login-remember"></label>
         <div>
           <span>记住密码</span>
-          <input id="login-remember" type="checkbox" value="true" ref="loginRemember" @click.stop="IsRemember">
+          <input id="login-remember" type="checkbox" value="true" ref="loginRemember" @click.stop="isRemember()">
           <p class="remember-tip" ref="rememberTip">请在信任的场所勾选此选项</p>
         </div>
       </div>
@@ -44,9 +44,11 @@
 </template>
 
 <script>
-import { getPhoneLogin, getEmailLogin } from '../../api/index'
-import { setLocalStorage, getLocalStorage } from '../../tools/tools'
-import { mapGetters, mapActions } from 'vuex'
+import { getPhoneLogin } from '../../api/index'
+import { getNewTime } from '../../tools/tools'
+import { addCookie, getCookie, delCookie } from '../../tools/cookie'
+import { mapActions } from 'vuex'
+import MD5 from 'md5'
 export default {
   name: 'LoginBottom',
   data () {
@@ -57,10 +59,10 @@ export default {
       * countTime: 倒计时时长
       * isNoCount: 容错次数是否为0
       * */
-      account: '手机号/网易邮箱',
+      account: '手机号',
       password: '',
       EmptyMessage: '请输入账号和密码',
-      WrongMessage: '请输入正确的手机号或者邮箱',
+      WrongMessage: '请输入正确的手机号',
       CountMessage: '密码或账号错误，请10s后再尝试',
       countTime: 10,
       loginState: null,
@@ -68,14 +70,8 @@ export default {
       isNoCount: false
     }
   },
-  computed: {
-    ...mapGetters([
-      'getIsRememberPW'
-    ])
-  },
   methods: {
     ...mapActions([
-      'setIsRememberPW',
       'setErrorMessage',
       'setIsShowError'
     ]),
@@ -84,26 +80,11 @@ export default {
       this[item] = ''
     },
     // 是否记住密码
-    IsRemember () {
-      if (this.getIsRememberPW) {
-        setLocalStorage('accountList', [])
-        this.$refs.rememberTip.classList.remove('active')
-      } else {
+    isRemember () {
+      if (this.$refs.loginRemember.checked) {
         this.$refs.rememberTip.classList.add('active')
-      }
-      this.setIsRememberPW(!this.getIsRememberPW)
-    },
-    // 记住密码接口
-    rememberPW (account, password) {
-      if (this.getIsRememberPW) {
-        let accountList = getLocalStorage('accountList')
-        if (!accountList) {
-          accountList = []
-          this.saveAccount(accountList, account, password)
-        } else {
-          if (accountList[0] === account && accountList[1] === password) return
-          this.saveAccount(accountList, account, password)
-        }
+      } else {
+        this.$refs.rememberTip.classList.remove('active')
       }
     },
     // 校验失败信息显示
@@ -111,35 +92,38 @@ export default {
       this.setErrorMessage(message)
       this.setIsShowError(true)
     },
-    // 保存账户和密码
-    saveAccount (accountList, account, password) {
-      accountList[0] = account
-      accountList[1] = password
-      setLocalStorage('accountList', accountList)
-    },
     // 验证信息
     loginCheck (account, password) {
-      // 判断是手机登录还是邮箱登录
-      let getLogin
-      if (/^1[0-9]{10}$/.test(account)) {
-        // 手机登录
-        getLogin = getPhoneLogin
-      } else if (/^[0-9a-zA-Z]{6,18}@163.com$/.test(account)) {
-        // 邮箱登录
-        getLogin = getEmailLogin
-      } else {
+      // 手机格式验证
+      if (!/^1[0-9]{10}$/.test(account)) {
         // 账号错误，重新输入
         this.checkError(this.WrongMessage)
         return
       }
+      // 登录账号密码验证
+      const mima = getCookie(account)
+      let md5password
+      if (!mima) {
+        // 未进行过加密算法
+        md5password = MD5(password)
+      } else {
+        // 已经进行过加密算法
+        if (mima !== password) {
+          // 用户修改了密码
+          md5password = MD5(password)
+        } else {
+          // 用户未修改密码
+          md5password = password
+        }
+      }
+      // 缓存问题解决方法
+      const time = getNewTime()
       // 密码校验
-      getLogin(account, password).then((data) => {
+      getPhoneLogin(account, md5password, time).then((data) => {
         if (data.code === 200) {
           this.count = 5
-          // 记住密码
-          if (this.getIsRememberPW) {
-            this.rememberPW(account, password)
-          }
+          // 记住密码cookie处理
+          this.$refs.loginRemember.checked ? addCookie(account, md5password, 24 * 7) : delCookie(account, md5password)
           // 登录首页
           this.$router.push('/home')
         } else {
@@ -187,12 +171,14 @@ export default {
     }
   },
   mounted () {
-    const accountList = getLocalStorage('accountList')
-    if (!accountList || accountList.length === 0) return
-    this.account = accountList[0]
-    this.password = accountList[1]
+    // 初始化页面（若上一次勾选记住密码则显示上一次登录数据）
+    if (!getCookie()) return
+    const offset = document.cookie.lastIndexOf(';')
+    const lastCookie = document.cookie.substr(offset + 1)
+    const account = lastCookie.split('=')
+    this.account = account[0]
+    this.password = account[1]
     this.$refs.loginRemember.checked = 'checked'
-    this.setIsRememberPW(true)
   }
 }
 </script>
