@@ -36,9 +36,9 @@
           v-for="(value, index) in keys"
           :key="index"
           :class="{ active: currentIndex === index }"
-          @click.stop="keyDown(index)"
           @touchstart.stop="touchstart($event)"
           @touchmove.stop="touchmove($event)"
+          @touchend.stop="touchend($event)"
           :data-key="index"
         >
           {{ value }}
@@ -67,7 +67,8 @@ export default {
       probeType: 3,
       beginY: 0,
       scrollY: 0,
-      titleHeight: 0
+      titleHeight: 0,
+      touchTarget: 0
     }
   },
   components: {
@@ -119,6 +120,11 @@ export default {
       }
       this.keyDown(index)
     },
+    touchend (e) {
+      if (!this.isKeyMove) {
+        this.keyDown(parseInt(e.target.dataset.key))
+      }
+    },
     selectSinger (id) {
       this.$router.push(`/home/singer/detail/${id}/singer`)
     }
@@ -138,17 +144,17 @@ export default {
         this.scrollY = y
         if (y > 0 || y < this.$refs.iscroll.maxScrollY()) return
         const groupsTop = this.groupsTop
-        let currentIndex = this.currentIndex
+        const currentIndex = this.currentIndex
         const y0 = -groupsTop[currentIndex]
         const y1 = -groupsTop[currentIndex + 1]
         if (y > y0) {
           // 下拉
-          --currentIndex
+          --this.currentIndex
           // 标题固定到顶部
           this.$refs.fixTitle.style.top = 0 + 'px'
         } else if (y <= y1) {
           // 上拉
-          ++currentIndex
+          ++this.currentIndex
           // 标题固定到顶部
           this.$refs.fixTitle.style.top = 0 + 'px'
         } else {
@@ -159,7 +165,7 @@ export default {
             this.$refs.fixTitle.style.top = isTitleY - this.titleHeight + 'px'
           }
         }
-        this.currentIndex = currentIndex
+        // this.currentIndex = currentIndex
       })
     }, 200)
   }
@@ -206,9 +212,13 @@ export default {
               border-radius: 50%;
               overflow: hidden;
               background: #dddddd;
-              img {
+              div{
                 width: 100%;
                 height: 100%;
+                img {
+                  width: 100%;
+                  height: 100%;
+                }
               }
             }
             p {

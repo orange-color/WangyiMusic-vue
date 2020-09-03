@@ -60,6 +60,12 @@ export default {
     },
     destroy () {
       this.iscroll = null
+    },
+    isScrollClick () {
+      const userAgent = navigator.userAgent
+      if (/iPhone|iPad|iPod|Macintosh/i.test(userAgent)) return false
+      if (/Chrome/i.test(userAgent)) return !(/Android/i.test(userAgent))
+      if (/Android/i.test(userAgent)) return true
     }
   },
   mounted () {
@@ -84,7 +90,8 @@ export default {
         hScrollbar: false,
         vScrollbar: false,
         // 关闭阻止默认行为，如click
-        preventDefault: false
+        // preventDefault: false
+        click: this.isScrollClick()
       })
       // 1 创建一个观察者对象
       /*
