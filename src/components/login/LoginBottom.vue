@@ -63,8 +63,8 @@ export default {
       password: '',
       EmptyMessage: '请输入账号和密码',
       WrongMessage: '请输入正确的手机号',
-      CountMessage: '密码或账号错误，请10s后再尝试',
-      countTime: 10,
+      CountMessage: '密码或账号错误，请60s后再尝试',
+      countTime: 60,
       loginState: null,
       count: 5,
       isNoCount: false
