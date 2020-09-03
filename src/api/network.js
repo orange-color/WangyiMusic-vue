@@ -3,9 +3,9 @@ import Vue from 'vue'
 
 // 进行全局的配置
 // axios.defaults.baseURL = 'http://192.168.0.108:3000/'
-// axios.defaults.baseURL = 'http://127.0.0.1:3000/'
+axios.defaults.baseURL = 'http://127.0.0.1:3000/'
 // axios.defaults.baseURL = 'http://192.168.0.108:3000/'
-axios.defaults.baseURL = 'http://music.it666.com:3666'
+// axios.defaults.baseURL = 'http://music.it666.com:3666'
 axios.defaults.timeout = 5000
 
 // 请求次数问题，等到所有响应结束后在隐藏
