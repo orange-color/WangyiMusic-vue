@@ -90,7 +90,9 @@ export default {
       if (newValue) {
         // 播放
         this.$refs.audio.play()
-        this.setHistorySong(this.currentSong)
+        if (this.currentSong.name !== '') {
+          this.setHistorySong(this.currentSong)
+        }
       } else {
         // 暂停
         this.$refs.audio.pause()
