@@ -63,7 +63,6 @@ export default {
     },
     isScrollClick () {
       const userAgent = navigator.userAgent
-      console.log(userAgent)
       if (/iPhone|iPad|iPod|Macintosh/i.test(userAgent)) return false
       if (/Chrome/i.test(userAgent)) return true
       if (/Android/i.test(userAgent)) return true
@@ -81,7 +80,7 @@ export default {
         bounce: false,
         // bounceEasing: 'quadratic',
         // 动画速度
-        deceleration: 0.002,
+        deceleration: 0.005,
         // 回弹动画时间
         // bounceTime: 200,
         scrollX: false,
@@ -119,7 +118,7 @@ export default {
         * 参数2：告诉观察者对象需要观察什么内容
         * */
       observer.observe(this.$refs.wrapper, config)
-    }, 200)
+    }, 100)
   },
   computed: {
     ...mapGetters([

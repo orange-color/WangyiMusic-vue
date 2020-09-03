@@ -17,7 +17,6 @@ Vue.use(VueLazyload, {
   // 可以设置图片还未加载好之前的占位图片，图片src -> v-lazy
   loading: require('./assets/images/loading_bg.png'),
   // attempt: 1
-  throttleWait: 200,
   lazyComponent: true
 })
 Vue.config.productionTip = false
