@@ -142,15 +142,15 @@ export default {
     })
   },
   mounted () {
-    // 处理移动端软键盘显示底部控件上移问题
-    if (/Android/i.test(navigator.userAgent)) {
-      this.windowViewY = document.body.offsetHeight
-      window.onresize = () => {
-        if (window.innerHeight < this.windowViewY) {
-          this.setMiniPlayer(false)
-        } else {
-          this.setMiniPlayer(this.songs.length !== 0)
-        }
+    // 处理移动端软键盘显示底部控件上移问题，兼容IOS，Android，不兼容微信【通过focus和blur解决】
+    // 记录窗口初始的高度
+    this.windowViewY = document.body.offsetHeight
+    // 监听窗口或框架被调整大小
+    window.onresize = () => {
+      if (document.body.offsetHeight < this.windowViewY) {
+        this.setMiniPlayer(false)
+      } else {
+        this.setMiniPlayer(true)
       }
     }
     // 监听滚动开始事件，软键盘隐藏
