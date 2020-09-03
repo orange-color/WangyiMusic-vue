@@ -3,28 +3,46 @@
     <div class="singer-wrapper">
       <ScrollView ref="iscroll" :probeType="probeType">
         <ul class="list-wrapper">
-          <li class="list-group" v-for="(value, index) in list" :key="index" ref="groupList">
-            <h2 class="group-title">{{keys[index]}}</h2>
+          <li
+            class="list-group"
+            v-for="(value, index) in list"
+            :key="index"
+            ref="groupList"
+          >
+            <h2 class="group-title">{{ keys[index] }}</h2>
             <ul class="group-items">
-              <li v-for="(obj, i) in value" :key="i" class="item" @click.stop="selectSinger(obj.id)">
-                <img v-lazy="obj.picUrl" alt="">
-                <p>{{obj.name}}</p>
+              <li
+                v-for="(obj, i) in value"
+                :key="i"
+                class="item"
+                @click.stop="selectSinger(obj.id)"
+              >
+                <div class="lazy-img">
+                  <lazy-component>
+                    <img :src="obj.picUrl" alt="" />
+                  </lazy-component>
+                </div>
+                <p>{{ obj.name }}</p>
               </li>
             </ul>
           </li>
         </ul>
       </ScrollView>
-      <div class="fix-title" v-show="fixTitle!==''" ref="fixTitle">{{fixTitle}}</div>
+      <div class="fix-title" v-show="fixTitle !== ''" ref="fixTitle">
+        {{ fixTitle }}
+      </div>
       <ul class="list-keys" ref="keyList">
         <li
           v-for="(value, index) in keys"
           :key="index"
-          :class="{'active':currentIndex===index}"
+          :class="{ active: currentIndex === index }"
           @click.stop="keyDown(index)"
           @touchstart.stop="touchstart($event)"
           @touchmove.stop="touchmove($event)"
           :data-key="index"
-        >{{value}}</li>
+        >
+          {{ value }}
+        </li>
       </ul>
     </div>
     <TransitionItem>
@@ -57,17 +75,19 @@ export default {
     TransitionItem
   },
   created () {
-    getAllArtists().then((obj) => {
-      this.keys = obj.keys
-      this.list = obj.list
-    }).catch(function (err) {
-      console.log(err)
-    })
+    getAllArtists()
+      .then(obj => {
+        this.keys = obj.keys
+        this.list = obj.list
+      })
+      .catch(function (err) {
+        console.log(err)
+      })
   },
   watch: {
     list () {
       this.$nextTick(() => {
-        this.$refs.groupList.forEach((item) => {
+        this.$refs.groupList.forEach(item => {
           this.groupsTop.push(item.offsetTop)
         })
       })
@@ -78,11 +98,13 @@ export default {
   },
   methods: {
     keyDown (index) {
+      const offset = Math.abs(index - this.currentIndex)
       this.currentIndex = index
-      this.$refs.iscroll.scrollTo(0, -this.groupsTop[index] - 1, 2000)
+      this.$refs.iscroll.scrollTo(0, -this.groupsTop[index] - 1, 200 * offset)
     },
     touchstart (e) {
-      this.isKeyMove = (parseInt(e.target.dataset.key) === this.currentIndex)
+      // string -> number
+      this.isKeyMove = parseInt(e.target.dataset.key) === this.currentIndex
       this.beginY = e.touches[0].clientY
     },
     touchmove (e) {
@@ -112,7 +134,7 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.$refs.iscroll.scrolling((y) => {
+      this.$refs.iscroll.scrolling(y => {
         this.scrollY = y
         if (y > 0 || y < this.$refs.iscroll.maxScrollY()) return
         const groupsTop = this.groupsTop
@@ -145,84 +167,90 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  @import '../assets/css/mixin';
-  @import '../assets/css/variable';
-  .singer {
-    width: 100%;
-    height: 100%;
-    .singer-wrapper{
-      position: fixed;
-      top: 184px;
-      @include position_bottom;
-      left: 0;
-      right: 0;
-      @include bg_sub_color;
-      overflow: hidden;
-      .list-wrapper{
-        .list-group{
-          .group-title{
-            width: 100%;
-            padding: 0 40px;
-            height: 70px;
-            line-height: 70px;
-            box-sizing: border-box;
-            @include bg_color;
-            @include font_size($font_medium);
-            color: #fff;
-          }
-          .group-items{
-            .item{
-              display: flex;
-              align-items: center;
+@import "../assets/css/mixin";
+@import "../assets/css/variable";
+.singer {
+  width: 100%;
+  height: 100%;
+  .singer-wrapper {
+    position: fixed;
+    top: 184px;
+    @include position_bottom;
+    left: 0;
+    right: 0;
+    @include bg_sub_color;
+    overflow: hidden;
+    .list-wrapper {
+      .list-group {
+        .group-title {
+          width: 100%;
+          padding: 0 40px;
+          height: 70px;
+          line-height: 70px;
+          box-sizing: border-box;
+          @include bg_color;
+          @include font_size($font_medium);
+          color: #fff;
+        }
+        .group-items {
+          .item {
+            display: flex;
+            align-items: center;
+            height: 100px;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
+            .lazy-img {
+              width: 100px;
               height: 100px;
-              padding: 10px 20px;
-              border-bottom: 1px solid #ccc;
-              img{
-                width: 100px;
-                height: 100px;
-                margin-right: 20px;
-                border-radius: 50%;
+              margin-right: 20px;
+              border-radius: 50%;
+              overflow: hidden;
+              background: #dddddd;
+              img {
+                width: 100%;
+                height: 100%;
               }
-              p{
-                @include font_size($font_medium);
-                @include font_color;
-              }
+            }
+            p {
+              @include font_size($font_medium);
+              @include font_color;
             }
           }
         }
       }
-      .fix-title{
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: 0 40px;
-        height: 70px;
-        line-height: 70px;
-        @include bg_color;
-        @include font_size($font_medium);
-        color: #fff;
-      }
-      .list-keys{
-        position: fixed;
-        top: 55%;
-        right: 0;
-        padding: 0 15px 0 20px;
-        box-sizing: border-box;
-        transform: translateY(-50%);
-        li{
-          width: 35px;
-          height: 35px;
-          line-height: 35px;
-          text-align: center;
-          @include font_size($font_small);
-          @include font_color;
-          &.active{
-            @include bg_color;
-            border-radius: 50%;
-          }
+    }
+    .fix-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 0 40px;
+      height: 70px;
+      line-height: 70px;
+      @include bg_color;
+      @include font_size($font_medium);
+      color: #fff;
+    }
+    .list-keys {
+      position: fixed;
+      top: 55%;
+      right: 0;
+      padding: 0 15px 0 20px;
+      box-sizing: border-box;
+      transform: translateY(-50%);
+      li {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
+        @include font_size($font_small);
+        @include font_color;
+        &.active {
+          @include bg_color;
+          border-radius: 50%;
         }
       }
     }
   }
+}
 </style>
