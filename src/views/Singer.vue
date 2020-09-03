@@ -35,10 +35,10 @@
         <li
           v-for="(value, index) in keys"
           :key="index"
-          :class="{ active: currentIndex === index }"
+          :class="{ active: keyIndex === index }"
           @touchstart.stop="touchstart($event)"
           @touchmove.stop="touchmove($event)"
-          @touchend.stop="touchend($event)"
+          @click.stop="keyDown(index)"
           :data-key="index"
         >
           {{ value }}
@@ -62,13 +62,15 @@ export default {
       keys: [],
       list: [],
       currentIndex: 0,
+      keyIndex: 0,
       groupsTop: [],
       isKeyMove: false,
       probeType: 3,
       beginY: 0,
       scrollY: 0,
       titleHeight: 0,
-      touchTarget: 0
+      touchTarget: 0,
+      flag: false
     }
   },
   components: {
@@ -99,13 +101,14 @@ export default {
   },
   methods: {
     keyDown (index) {
-      const offset = Math.abs(index - this.currentIndex)
-      this.currentIndex = index
+      this.flag = true
+      const offset = Math.abs(index - this.keyIndex)
+      this.keyIndex = index
       this.$refs.iscroll.scrollTo(0, -this.groupsTop[index] - 1, 200 * offset)
     },
     touchstart (e) {
       // string -> number
-      this.isKeyMove = parseInt(e.target.dataset.key) === this.currentIndex
+      this.isKeyMove = parseInt(e.target.dataset.key) === this.keyIndex
       this.beginY = e.touches[0].clientY
     },
     touchmove (e) {
@@ -119,11 +122,6 @@ export default {
         index = this.keys.length - 1
       }
       this.keyDown(index)
-    },
-    touchend (e) {
-      if (!this.isKeyMove) {
-        this.keyDown(parseInt(e.target.dataset.key))
-      }
     },
     selectSinger (id) {
       this.$router.push(`/home/singer/detail/${id}/singer`)
@@ -144,17 +142,17 @@ export default {
         this.scrollY = y
         if (y > 0 || y < this.$refs.iscroll.maxScrollY()) return
         const groupsTop = this.groupsTop
-        const currentIndex = this.currentIndex
+        let currentIndex = this.currentIndex
         const y0 = -groupsTop[currentIndex]
         const y1 = -groupsTop[currentIndex + 1]
         if (y > y0) {
           // 下拉
-          --this.currentIndex
+          --currentIndex
           // 标题固定到顶部
           this.$refs.fixTitle.style.top = 0 + 'px'
         } else if (y <= y1) {
           // 上拉
-          ++this.currentIndex
+          ++currentIndex
           // 标题固定到顶部
           this.$refs.fixTitle.style.top = 0 + 'px'
         } else {
@@ -165,7 +163,13 @@ export default {
             this.$refs.fixTitle.style.top = isTitleY - this.titleHeight + 'px'
           }
         }
-        // this.currentIndex = currentIndex
+        this.currentIndex = currentIndex
+        if (!this.flag) {
+          this.keyIndex = currentIndex
+        }
+      })
+      this.$refs.iscroll.scrollEnd(() => {
+        this.flag = false
       })
     }, 200)
   }
@@ -218,6 +222,7 @@ export default {
                 img {
                   width: 100%;
                   height: 100%;
+                  background: transparent;
                 }
               }
             }

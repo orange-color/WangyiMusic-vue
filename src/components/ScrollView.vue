@@ -63,8 +63,9 @@ export default {
     },
     isScrollClick () {
       const userAgent = navigator.userAgent
+      console.log(userAgent)
       if (/iPhone|iPad|iPod|Macintosh/i.test(userAgent)) return false
-      if (/Chrome/i.test(userAgent)) return !(/Android/i.test(userAgent))
+      if (/Chrome/i.test(userAgent)) return true
       if (/Android/i.test(userAgent)) return true
     }
   },
