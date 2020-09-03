@@ -161,7 +161,7 @@ export default {
         return
       }
       // 验证未超次数
-      const account = this.account
+      const account = this.account.trim()
       const password = this.password
       if (!account || !password) {
         this.checkError(this.EmptyMessage)
